@@ -10,11 +10,18 @@ namespace MathSyntax
     {
         public Variable(string Name) : base(false, Name)
         {
+            this.Power = new NumericConstant(1);
+        }
+        public Variable(string Name, SyntaxBlock Power) : base(false, Name)
+        {
+            this.Power = Power;
         }
         public override string print()
         {
             return Name;
         }
+
+        SyntaxBlock Power;
 
         public override List<ArgumentValue> GetAllVariables()
         {
@@ -25,10 +32,17 @@ namespace MathSyntax
 
         public override bool IsConstant(Dictionary<long, bool> TemporaryConstant)
         {
-            try {
-                if (TemporaryConstant[ID]) {
-                    return true; }
-            }catch{}
+            if (Power.IsConstant(TemporaryConstant))
+            {
+                try
+                {
+                    if (TemporaryConstant[ID])
+                    {
+                        return true;
+                    }
+                }
+                catch { }
+            }
             return false;
         }
     }

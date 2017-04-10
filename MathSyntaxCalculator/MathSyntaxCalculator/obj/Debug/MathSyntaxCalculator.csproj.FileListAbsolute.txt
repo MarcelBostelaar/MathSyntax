@@ -1,6 +1,0 @@
-E:\Projects\Onetimeuseitems\MathSyntaxCalculator\MathSyntaxCalculator\MathSyntaxCalculator\bin\Debug\MathSyntaxCalculator.exe.config
-E:\Projects\Onetimeuseitems\MathSyntaxCalculator\MathSyntaxCalculator\MathSyntaxCalculator\bin\Debug\MathSyntaxCalculator.exe
-E:\Projects\Onetimeuseitems\MathSyntaxCalculator\MathSyntaxCalculator\MathSyntaxCalculator\bin\Debug\MathSyntaxCalculator.pdb
-E:\Projects\Onetimeuseitems\MathSyntaxCalculator\MathSyntaxCalculator\MathSyntaxCalculator\obj\Debug\MathSyntaxCalculator.csprojResolveAssemblyReference.cache
-E:\Projects\Onetimeuseitems\MathSyntaxCalculator\MathSyntaxCalculator\MathSyntaxCalculator\obj\Debug\MathSyntaxCalculator.exe
-E:\Projects\Onetimeuseitems\MathSyntaxCalculator\MathSyntaxCalculator\MathSyntaxCalculator\obj\Debug\MathSyntaxCalculator.pdb
