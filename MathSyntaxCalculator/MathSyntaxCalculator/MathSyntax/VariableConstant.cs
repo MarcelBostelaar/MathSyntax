@@ -6,86 +6,28 @@ using System.Threading.Tasks;
 
 namespace MathSyntax
 {
-    class VariableConstant2 : SyntaxBlock
+    class VariableConstant : Abstract_variable
     {
-        ArgumentValue Argument;
-        bool isConstant;
-        public VariableConstant2(ArgumentValue Argument)
+        public VariableConstant(ArgumentValue Argument) : base(Argument, true) { }
+
+        public override SyntaxBlock Derivative(ArgumentValue ArgumentToDerive)
         {
-            this.Argument = Argument;
-            isConstant = true;
+            return new NumericConstant(0);
         }
 
-        protected VariableConstant2(ArgumentValue Argument, bool IsConstant)
-        {
-            this.Argument = Argument;
-            isConstant = IsConstant;
-        }
-
-        public SyntaxBlock Derivative(Dictionary<ArgumentValue, bool> TemporaryConstant)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<ArgumentValue> GetAllVariables()
+        public override List<ArgumentValue> GetAllVariables(bool OnlyNonConstants)
         {
             var list = new List<ArgumentValue>();
-            list.Add(Argument);
+            if (!OnlyNonConstants)
+            {
+                list.Add(Argument);
+            }
             return list;
         }
 
-        public bool IsConstant(Dictionary<ArgumentValue, bool> TemporaryConstant)
-        {
-            if (isConstant)
-            {
-                return true;
-            }
-            try
-            {
-                if (TemporaryConstant[Argument])
-                {
-                    return true;
-                }
-            }
-            catch { }
-            return false;
-        }
-
-        public string print()
-        {
-            return Argument.Name;
-        }
-    }
-
-    class Variable2 : VariableConstant2
-    {
-        public Variable2(ArgumentValue Argument) : base(Argument, false) { }
-    }
-
-    class VariableConstant : ArgumentValue
-    {
-        public VariableConstant(string Name) : base (true, Name)
-        {
-        }
-        public override bool IsConstant(Dictionary<long, bool> TemporaryConstant)
+        public override bool IsConstant(ArgumentValue Non_Constant)
         {
             return true;
-        }
-
-        public override string print()
-        {
-            return Name;
-        }
-        public override List<ArgumentValue> GetAllVariables()
-        {
-            var i = new List<ArgumentValue>();
-            i.Add(this);
-            return i;
-        }
-
-        public override SyntaxBlock Derivative(Dictionary<long, bool> TemporaryConstant)
-        {
-            return new NumericConstant(0);
         }
     }
 }

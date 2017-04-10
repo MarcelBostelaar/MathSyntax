@@ -6,53 +6,33 @@ using System.Threading.Tasks;
 
 namespace MathSyntax
 {
-    class Variable : ArgumentValue
+    class Variable : Abstract_variable
     {
-        public Variable(string Name) : base(false, Name)
-        {
-            this.Power = new NumericConstant(1);
-        }
-        public Variable(string Name, SyntaxBlock Power) : base(false, Name)
-        {
-            this.Power = Power;
-        }
-        public override string print()
-        {
-            return Name;
-        }
+        public Variable(ArgumentValue Argument) : base(Argument, false) { }
 
-        SyntaxBlock Power;
-
-        public override List<ArgumentValue> GetAllVariables()
+        public override SyntaxBlock Derivative(ArgumentValue ArgumentToDerive)
         {
-            var i = Power.GetAllVariables();
-            i.Add(this);
-            return i;
-        }
-
-        public override bool IsConstant(Dictionary<long, bool> TemporaryConstant)
-        {
-            if (Power.IsConstant(TemporaryConstant))
+            if(ArgumentToDerive != Argument)
             {
-                try
-                {
-                    if (TemporaryConstant[ID])
-                    {
-                        return true;
-                    }
-                }
-                catch { }
+                return new NumericConstant(0);
+            }
+            return new NumericConstant(1);
+        }
+
+        public override List<ArgumentValue> GetAllVariables(bool OnlyNonConstants)
+        {
+            var list = new List<ArgumentValue>();
+            list.Add(Argument);
+            return list;
+        }
+
+        public override bool IsConstant(ArgumentValue Non_Constant)
+        {
+            if(Argument != Non_Constant)
+            {
+                return true;
             }
             return false;
         }
-
-        public override SyntaxBlock Derivative(Dictionary<long, bool> TemporaryConstant)
-        {
-            if(!Power.IsConstant(TemporaryConstant))
-            {
-                throw new DerivativeException("Can't calculate a derivative of a variable to the power of a non-constant yet");
-            }
-            return new Product()
-        }
     }
-}
+ }

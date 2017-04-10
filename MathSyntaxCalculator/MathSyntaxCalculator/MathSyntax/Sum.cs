@@ -21,18 +21,18 @@ namespace MathSyntax
             return ("(" + A.print() + " + " + B.print() + ")");
         }
 
-        public List<ArgumentValue> GetAllVariables()
+        public List<ArgumentValue> GetAllVariables(bool OnlyNonConstants)
         {
             List<ArgumentValue> listA, listB;
-            listA = A.GetAllVariables();
-            listB = B.GetAllVariables();
+            listA = A.GetAllVariables(OnlyNonConstants);
+            listB = B.GetAllVariables(OnlyNonConstants);
             listA.AddRange(listB);
             return listA;
         }
 
-        public bool IsConstant(Dictionary<long, bool> TemporaryConstant)
+        public bool IsConstant(ArgumentValue Non_Constant)
         {
-            if (A.IsConstant(TemporaryConstant) && B.IsConstant(TemporaryConstant))
+            if (A.IsConstant(Non_Constant) && B.IsConstant(Non_Constant))
             {
                 return true;
             }
@@ -42,11 +42,11 @@ namespace MathSyntax
             }
         }
 
-        public SyntaxBlock Derivative(Dictionary<long, bool> TemporaryConstant)
+        public SyntaxBlock Derivative(ArgumentValue ArgumentToDerive)
         {
             bool AisConstant, BisConstant;
-            AisConstant = A.IsConstant(TemporaryConstant);
-            BisConstant = B.IsConstant(TemporaryConstant);
+            AisConstant = A.IsConstant(ArgumentToDerive);
+            BisConstant = B.IsConstant(ArgumentToDerive);
             if (AisConstant && BisConstant)
             {
                 return new NumericConstant(0);
@@ -59,8 +59,8 @@ namespace MathSyntax
             }
             else
             {
-                _a = A.Derivative(TemporaryConstant);
-            }             
+                _a = A.Derivative(ArgumentToDerive);
+            }
 
             if (BisConstant)
             {
@@ -68,9 +68,57 @@ namespace MathSyntax
             }
             else
             {
-                _b = B.Derivative(TemporaryConstant);
+                _b = B.Derivative(ArgumentToDerive);
             }
             return new Sum(_a, _b);
+        }
+
+        public SyntaxBlock Simplify()
+        {
+            A = A.Simplify();
+            B = B.Simplify();
+            
+            NumericConstant _a, _b;
+            _a = null;
+            _b = null;
+            try
+            {
+                _a = (NumericConstant)A;
+            }
+            catch { }
+            try
+            {
+                _b = (NumericConstant)B;
+            }
+            catch { }
+
+            if(_a == null && _b == null) //Neither A nor B are numeric constants, return this sum in its existing state.
+            {
+                return this;
+            }
+
+            if (_a != null && _b != null) //Both A and B are numeric constants, return new numeric constant that is the sum of both.
+            {
+                return new NumericConstant(_a.value + _b.value);
+            }
+
+            if(_a != null) //if a is zero, return B;
+            {
+                if(_a.value == 0)
+                {
+                    return B;
+                }
+            }
+
+            if (_b != null) //if b is zero, return A;
+            {
+                if (_b.value == 0)
+                {
+                    return A;
+                }
+            }
+
+            return this; //No simplification possible, return this sum in its existing state.
         }
     }
 }

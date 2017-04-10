@@ -10,19 +10,28 @@ namespace MathSyntax
     {
         public static List<Tuple<ArgumentValue, SyntaxBlock>> CalculatePartialDerivatives(SyntaxBlock Formula)
         {
-            var AllVariables = Formula.GetAllVariables();
-            var NonConstants = new List<ArgumentValue>();
-            foreach(var i in AllVariables)
-            {
-                if (!i.Constant)
-                {
-                    NonConstants.Add(i);
-                }
+            var AllVariableVariables = Formula.GetAllVariables(true);
+            var distinctVariables = AllVariableVariables.Distinct();
+            List<Tuple<ArgumentValue, SyntaxBlock>> PartialDerivatives = new List<Tuple<ArgumentValue, SyntaxBlock>>();
+
+            foreach (ArgumentValue i in distinctVariables) {
+                PartialDerivatives.Add(new Tuple<ArgumentValue, SyntaxBlock>(i, Formula.Derivative(i).Simplify()));
             }
+            return PartialDerivatives;
+        }
 
-
-
-            throw new NotImplementedException();
+        public static SyntaxBlock CalculateDerivative(SyntaxBlock Formula)
+        {
+            var listOfPartials = CalculatePartialDerivatives(Formula);
+            if(listOfPartials.Count > 1)
+            {
+                throw new DerivativeException("Formula has more than one variable");
+            }
+            if (listOfPartials.Count < 1)
+            {
+                throw new DerivativeException("Formula has no derivatives");
+            }
+            return listOfPartials[0].Item2;
         }
     }
 }

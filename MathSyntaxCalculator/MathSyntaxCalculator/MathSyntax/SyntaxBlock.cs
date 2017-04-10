@@ -8,9 +8,14 @@ namespace MathSyntax
 {
     public interface SyntaxBlock
     {
-        bool IsConstant(Dictionary<ArgumentValue, bool> TemporaryConstant);
+        bool IsConstant(ArgumentValue Non_Constant);
         string print();
-        List<ArgumentValue> GetAllVariables();
-        SyntaxBlock Derivative(Dictionary<ArgumentValue, bool> TemporaryConstant);
+        List<ArgumentValue> GetAllVariables(bool OnlyNonConstants);
+        SyntaxBlock Derivative(ArgumentValue ArgumentToDerive);
+        /// <summary>
+        /// Simplifies the formula
+        /// </summary>
+        /// <returns>Returns the value with which replace itself</returns>
+        SyntaxBlock Simplify();
     }
 }

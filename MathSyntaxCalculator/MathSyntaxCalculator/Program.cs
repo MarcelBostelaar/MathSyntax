@@ -11,14 +11,26 @@ namespace MathSyntaxCalculator
     {
         static void Main(string[] args)
         {
-            var A = new Variable("A");
-            var B = new VariableConstant("B");
-            var C = new NumericConstant(420);
-            SyntaxBlock SomeSum = new Sum(A, new Sum(B,C));
-            var dict = new Dictionary<long, bool>();
-            //dict.Add(A.ID, true);
-            Console.WriteLine(SomeSum.IsConstant(dict));
-            var list = SomeSum.GetAllVariables();
+            var A = new ArgumentValue("A");
+            var B = new ArgumentValue("B");
+            var C = new ArgumentValue("C");
+            var D = new ArgumentValue("D");
+            var E = new ArgumentValue("E");
+            var F = new ArgumentValue("F");
+            var G = new ArgumentValue("G");
+            SyntaxBlock SomeSum = new Sum(new Variable(A), new Sum(new VariableConstant(B),new NumericConstant(420)));
+            SyntaxBlock functionA, functionB;
+            functionA = new Product(new NumericConstant(44), new Product(new Variable(A), new Variable(B)));
+            functionB = new Product(new VariableConstant(C), new Product(new Variable(A), new Variable(D)));
+            SyntaxBlock ComplexSum = new Sum(functionA, functionB);
+            SyntaxBlock SuperComplexProduct = new Product(ComplexSum, ComplexSum);
+            var derivatives = Derivatives.CalculatePartialDerivatives(SuperComplexProduct);
+            foreach(var i in derivatives)
+            {
+                Console.WriteLine(i.Item1.Name + " : " + i.Item2.print());
+            }
+
+            var list = SomeSum.GetAllVariables(true);
             foreach(var i in list)
             {
                 Console.Write(i.Name + ", ");

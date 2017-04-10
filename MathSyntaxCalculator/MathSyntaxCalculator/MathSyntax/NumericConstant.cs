@@ -19,19 +19,24 @@ namespace MathSyntax
             return value.ToString();
         }
 
-        public List<ArgumentValue> GetAllVariables()
+        public List<ArgumentValue> GetAllVariables(bool OnlyNonConstants)
         {
             return new List<ArgumentValue>();
         }
 
-        public bool IsConstant(Dictionary<long, bool> TemporaryConstant)
+        public bool IsConstant(ArgumentValue Non_Constant)
         {
             return true;
         }
 
-        public SyntaxBlock Derivative(Dictionary<long, bool> TemporaryConstant)
+        public SyntaxBlock Derivative(ArgumentValue ArgumentToDerive)
         {
             return new NumericConstant(0);
+        }
+
+        public SyntaxBlock Simplify()
+        {
+            return this;
         }
     }
 }
