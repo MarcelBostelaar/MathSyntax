@@ -8,11 +8,11 @@ namespace MathSyntax
 {
     class NumericConstant : SyntaxBlock
     {
-        public NumericConstant(float Value)
+        public NumericConstant(double Value)
         {
             value = Value;
         }
-        public float value { get; private set; }
+        public double value { get; private set; }
         
         public string print()
         {
@@ -37,6 +37,11 @@ namespace MathSyntax
         public SyntaxBlock Simplify()
         {
             return this;
+        }
+
+        public double Calculate()
+        {
+            return value;
         }
     }
 }

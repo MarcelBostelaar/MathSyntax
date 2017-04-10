@@ -120,5 +120,10 @@ namespace MathSyntax
 
             return this; //No simplification possible, return this sum in its existing state.
         }
+
+        public double Calculate()
+        {
+            return A.Calculate() + B.Calculate();
+        }
     }
 }

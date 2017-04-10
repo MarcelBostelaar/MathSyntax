@@ -15,6 +15,11 @@ namespace MathSyntax
             this.B = B;
         }
 
+        public double Calculate()
+        {
+            return A.Calculate() * B.Calculate();
+        }
+
         public SyntaxBlock Derivative(ArgumentValue ArgumentToDerive)
         {
             return new Sum(new Product(A.Derivative(ArgumentToDerive), B), new Product(A, B.Derivative(ArgumentToDerive)));

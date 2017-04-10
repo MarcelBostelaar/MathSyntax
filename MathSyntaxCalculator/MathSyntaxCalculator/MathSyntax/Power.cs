@@ -13,6 +13,11 @@ namespace MathSyntax
             throw new NotImplementedException();
         }
 
+        public double Calculate()
+        {
+            throw new NotImplementedException();
+        }
+
         public SyntaxBlock Derivative(ArgumentValue ArgumentToDerive)
         {
             throw new NotImplementedException();

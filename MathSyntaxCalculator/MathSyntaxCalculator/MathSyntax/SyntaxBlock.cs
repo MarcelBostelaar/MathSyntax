@@ -17,5 +17,10 @@ namespace MathSyntax
         /// </summary>
         /// <returns>Returns the value with which replace itself</returns>
         SyntaxBlock Simplify();
+        /// <summary>
+        /// Calculates the formula with the current values in the arguments.
+        /// </summary>
+        /// <returns>The solution</returns>
+        double Calculate();
     }
 }

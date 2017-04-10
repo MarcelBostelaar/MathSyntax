@@ -31,5 +31,10 @@ namespace MathSyntax
         {
             return Argument.Name;
         }
+
+        public double Calculate()
+        {
+            return Argument.Value;
+        }
     }
 }

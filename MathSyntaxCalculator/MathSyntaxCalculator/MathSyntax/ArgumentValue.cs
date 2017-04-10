@@ -14,6 +14,6 @@ namespace MathSyntax
             Value = 0;
         }
         public string Name { get; private set; }
-        public float Value { get; set; }
+        public double Value { get; set; }
     }
 }
