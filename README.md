@@ -21,4 +21,5 @@ Simplification does not yet do anything beyond removing the following:
 - A + 0 -> A
 - Number + Number -> Number
 - Number * Number -> Number
+
 Calculating (partial) derivatives from large formulas can take a long time.
