@@ -8,6 +8,11 @@ namespace MathSyntax
 {
     class Sum : SyntaxBlock
     {
+        /// <summary>
+        /// Creates a sum syntax block which adds argument A and B together.
+        /// </summary>
+        /// <param name="A">The left side of the sum.</param>
+        /// <param name="B">The right side of the sum.</param>
         public Sum(SyntaxBlock A, SyntaxBlock B)
         {
             this.A = A;
@@ -30,7 +35,7 @@ namespace MathSyntax
             return listA;
         }
 
-        public bool IsConstant(ArgumentValue Non_Constant)
+        public bool IsConstant(VariableArgumentValue Non_Constant)
         {
             if (A.IsConstant(Non_Constant) && B.IsConstant(Non_Constant))
             {
@@ -42,7 +47,7 @@ namespace MathSyntax
             }
         }
 
-        public SyntaxBlock Derivative(ArgumentValue ArgumentToDerive)
+        public SyntaxBlock Derivative(VariableArgumentValue ArgumentToDerive)
         {
             bool AisConstant, BisConstant;
             AisConstant = A.IsConstant(ArgumentToDerive);

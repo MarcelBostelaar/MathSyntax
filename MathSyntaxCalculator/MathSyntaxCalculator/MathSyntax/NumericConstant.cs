@@ -8,6 +8,10 @@ namespace MathSyntax
 {
     class NumericConstant : SyntaxBlock
     {
+        /// <summary>
+        /// Creates a numeric constant. Value is unchangable once created.
+        /// </summary>
+        /// <param name="Value">The value for the constant.</param>
         public NumericConstant(double Value)
         {
             value = Value;
@@ -24,12 +28,12 @@ namespace MathSyntax
             return new List<ArgumentValue>();
         }
 
-        public bool IsConstant(ArgumentValue Non_Constant)
+        public bool IsConstant(VariableArgumentValue Non_Constant)
         {
             return true;
         }
 
-        public SyntaxBlock Derivative(ArgumentValue ArgumentToDerive)
+        public SyntaxBlock Derivative(VariableArgumentValue ArgumentToDerive)
         {
             return new NumericConstant(0);
         }

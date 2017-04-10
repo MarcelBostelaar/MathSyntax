@@ -9,6 +9,11 @@ namespace MathSyntax
     class Product : SyntaxBlock
     {
         SyntaxBlock A, B;
+        /// <summary>
+        /// Creates a product syntax block, which multiplies argument A and B together.
+        /// </summary>
+        /// <param name="A">The left side of the product.</param>
+        /// <param name="B">The right side of the product.</param>
         public Product(SyntaxBlock A, SyntaxBlock B)
         {
             this.A = A;
@@ -20,7 +25,7 @@ namespace MathSyntax
             return A.Calculate() * B.Calculate();
         }
 
-        public SyntaxBlock Derivative(ArgumentValue ArgumentToDerive)
+        public SyntaxBlock Derivative(VariableArgumentValue ArgumentToDerive)
         {
             return new Sum(new Product(A.Derivative(ArgumentToDerive), B), new Product(A, B.Derivative(ArgumentToDerive)));
         }
@@ -32,7 +37,7 @@ namespace MathSyntax
             return lista;
         }
 
-        public bool IsConstant(ArgumentValue Non_Constant)
+        public bool IsConstant(VariableArgumentValue Non_Constant)
         {
             if (A.IsConstant(Non_Constant) && B.IsConstant(Non_Constant))
                 return true;

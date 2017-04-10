@@ -11,33 +11,74 @@ namespace MathSyntaxCalculator
     {
         static void Main(string[] args)
         {
-            var A = new ArgumentValue("A");
-            var B = new ArgumentValue("B");
-            var C = new ArgumentValue("C");
-            var D = new ArgumentValue("D");
-            var E = new ArgumentValue("E");
-            var F = new ArgumentValue("F");
-            var G = new ArgumentValue("G");
-            SyntaxBlock SomeSum = new Sum(new Variable(A), new Sum(new VariableConstant(B),new NumericConstant(420)));
+            /*
+            Currently implemented:
+                Sums
+                Products
+                Numeric constants
+                Variable constants (constants that can be changed)
+                Variables
+            
+            Functionality:
+                (Partial) derivatives
+                Calculations
+                Printing of formulas
+            
+            Notes:
+                Simplification does not yet do anything beyond removing the following:
+                    A * 0 -> 0
+                    A * 1 -> A
+                    A + 0 -> A
+                    Number + Number -> Number
+                    Number * Number -> Number
+                Calculating (partial) derivatives from large formulas can take a long time.
+                
+            */
+
+            var A = new VariableArgumentValue("A");//create arguments with values, IE variables. The values of the variables can be changed using "ConstantArgumentValue" and "VariableArgumentValue".
+
+            var B = new ConstantArgumentValue("B");//A variable constant. Can only be used to create constants in the syntax.
+
+            var C = new VariableArgumentValue("C");//A true variable. Can only be used to create variables in the syntax.
+            var D = new VariableArgumentValue("D");
+            
+            A.Value = 10;//change their value, their value type is a double.
+            B.Value = 13;
+            C.Value = 14.67;
+            D.Value = -3;
+
+            SyntaxBlock SomeSum = new Sum(new Variable(A), new Sum(new VariableConstant(B),new NumericConstant(420))); //create a formula.
+            Console.WriteLine(SomeSum.print()); //print the forumula
+            Console.WriteLine(SomeSum.Calculate()); //Calculate the results of a formula
+
+            Console.Write("\n");//space on console
+            Console.WriteLine("Calculating partial derivatives");
+
+
             SyntaxBlock functionA, functionB;
-            functionA = new Product(new NumericConstant(44), new Product(new Variable(A), new Variable(B)));
-            functionB = new Product(new VariableConstant(C), new Product(new Variable(A), new Variable(D)));
-            SyntaxBlock ComplexSum = new Sum(functionA, functionB);
-            SyntaxBlock SuperComplexProduct = new Product(ComplexSum, ComplexSum);
-            SyntaxBlock SuperSuperComplexProduct = new Product(SuperComplexProduct, SuperComplexProduct);
-            var derivatives = Derivatives.CalculatePartialDerivatives(SuperSuperComplexProduct);
+            functionA = new Product(new NumericConstant(44), new Product(new Variable(A), new Variable(C)));
+            functionB = new Product(new VariableConstant(B), new Product(new Variable(A), new Variable(D)));
+
+            SyntaxBlock ComplexSum = new Sum(functionA, functionB); //functions of functions
+            SyntaxBlock SuperComplexProduct = new Product(ComplexSum, ComplexSum); //functions of functions of functions
+            SyntaxBlock SuperSuperComplexProduct = new Product(SuperComplexProduct, SuperComplexProduct); //functions^4
+
+            List<Tuple<VariableArgumentValue, SyntaxBlock>> derivatives = Derivatives.CalculatePartialDerivatives(SuperSuperComplexProduct); //Calculate all the partial derivatives of a given function.
+            //A Function to calculate the derivative for a simple (single argument) function is also present, but will throw an exception if the formula given has more than one variable.
+            //swap out "SuperSuperComplexProduct" for any other syntaxblock to see the result.
             foreach(var i in derivatives)
             {
-                Console.WriteLine(i.Item1.Name + " : " + i.Item2.print());
+                Console.WriteLine(i.Item1.Name + " : " + i.Item2.print()); //print the resulting derivatives
+                Console.WriteLine();
             }
 
-            A.Value = 10;
-            B.Value = 13;
-            C.Value = 55;
-            D.Value = -3;
-            double CalculationResult = derivatives[0].Item2.Calculate();
-            Console.WriteLine(CalculationResult);
-            Console.WriteLine(SomeSum.print());
+            double CalculationResult = derivatives[0].Item2.Calculate(); //calculate the result of a derivative function.
+            Console.WriteLine("Calculation result: " + CalculationResult);
+
+
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
         }
     }
 }

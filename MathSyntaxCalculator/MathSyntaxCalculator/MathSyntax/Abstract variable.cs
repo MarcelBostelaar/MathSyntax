@@ -11,7 +11,7 @@ namespace MathSyntax
         protected ArgumentValue Argument;
         bool isAlwaysConstant;
 
-        public abstract SyntaxBlock Derivative(ArgumentValue ArgumentToDerive);
+        public abstract SyntaxBlock Derivative(VariableArgumentValue ArgumentToDerive);
 
         protected Abstract_variable(ArgumentValue Argument, bool alwaysConstant)
         {
@@ -20,7 +20,7 @@ namespace MathSyntax
         }
         public abstract List<ArgumentValue> GetAllVariables(bool OnlyNonConstants);
 
-        public abstract bool IsConstant(ArgumentValue Non_Constant);
+        public abstract bool IsConstant(VariableArgumentValue Non_Constant);
 
         public SyntaxBlock Simplify()
         {
