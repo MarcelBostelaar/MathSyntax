@@ -1,20 +1,20 @@
-#MathSyntax
+# MathSyntax
 
 A C# library for dynamically creating mathematical formulas and performing operations with and on them.
 
-##Currently implemented:
+## Currently implemented:
 Sums
 Products
 Numeric constants
 Variable constants (constants that can be changed)
 Variables
 
-##Functionality:
+## Functionality:
 (Partial) derivatives
 Calculations
 Printing of formulas
 
-##Notes:
+## Notes:
 Simplification does not yet do anything beyond removing the following:
 -A * 0 -> 0
 -A * 1 -> A
