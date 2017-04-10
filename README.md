@@ -5,6 +5,7 @@ A C# library for dynamically creating mathematical formulas and performing opera
 ## Currently implemented:
 - Sums
 - Products
+- Quotients
 - Numeric constants
 - Variable constants (constants that can be changed)
 - Variables
