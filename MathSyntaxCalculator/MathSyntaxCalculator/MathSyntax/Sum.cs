@@ -49,33 +49,7 @@ namespace MathSyntax
 
         public SyntaxBlock Derivative(VariableArgumentValue ArgumentToDerive)
         {
-            bool AisConstant, BisConstant;
-            AisConstant = A.IsConstant(ArgumentToDerive);
-            BisConstant = B.IsConstant(ArgumentToDerive);
-            if (AisConstant && BisConstant)
-            {
-                return new NumericConstant(0);
-            }
-            SyntaxBlock _a, _b;
-
-            if (AisConstant)
-            {
-                _a = new NumericConstant(0);
-            }
-            else
-            {
-                _a = A.Derivative(ArgumentToDerive);
-            }
-
-            if (BisConstant)
-            {
-                _b = new NumericConstant(0);
-            }
-            else
-            {
-                _b = B.Derivative(ArgumentToDerive);
-            }
-            return new Sum(_a, _b);
+            return new Sum(A.Derivative(ArgumentToDerive), B.Derivative(ArgumentToDerive));
         }
 
         public SyntaxBlock Simplify()
