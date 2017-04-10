@@ -25,7 +25,6 @@ namespace MathSyntax
         public abstract List<ArgumentValue> GetAllVariables();
         public abstract bool IsConstant(Dictionary<long, bool> TemporaryConstant);
         public abstract SyntaxBlock Derivative(Dictionary<long, bool> TemporaryConstant);
-        public abstract object Clone();
 
         private static long Counter = 0;
     }

@@ -48,7 +48,11 @@ namespace MathSyntax
 
         public override SyntaxBlock Derivative(Dictionary<long, bool> TemporaryConstant)
         {
-            throw new NotImplementedException();
+            if(!Power.IsConstant(TemporaryConstant))
+            {
+                throw new DerivativeException("Can't calculate a derivative of a variable to the power of a non-constant yet");
+            }
+            return new Product()
         }
     }
 }
