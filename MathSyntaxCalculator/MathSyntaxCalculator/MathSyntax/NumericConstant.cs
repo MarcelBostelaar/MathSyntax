@@ -12,8 +12,8 @@ namespace MathSyntax
         {
             value = Value;
         }
-        float value;
-
+        public float value { get; private set; }
+        
         public string print()
         {
             return value.ToString();
@@ -27,6 +27,11 @@ namespace MathSyntax
         public bool IsConstant(Dictionary<long, bool> TemporaryConstant)
         {
             return true;
+        }
+
+        public SyntaxBlock Derivative(Dictionary<long, bool> TemporaryConstant)
+        {
+            return new NumericConstant(0);
         }
     }
 }

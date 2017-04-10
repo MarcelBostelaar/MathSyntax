@@ -41,5 +41,36 @@ namespace MathSyntax
                 return false;
             }
         }
+
+        public SyntaxBlock Derivative(Dictionary<long, bool> TemporaryConstant)
+        {
+            bool AisConstant, BisConstant;
+            AisConstant = A.IsConstant(TemporaryConstant);
+            BisConstant = B.IsConstant(TemporaryConstant);
+            if (AisConstant && BisConstant)
+            {
+                return new NumericConstant(0);
+            }
+            SyntaxBlock _a, _b;
+
+            if (AisConstant)
+            {
+                _a = new NumericConstant(0);
+            }
+            else
+            {
+                _a = A.Derivative(TemporaryConstant);
+            }             
+
+            if (BisConstant)
+            {
+                _b = new NumericConstant(0);
+            }
+            else
+            {
+                _b = B.Derivative(TemporaryConstant);
+            }
+            return new Sum(_a, _b);
+        }
     }
 }

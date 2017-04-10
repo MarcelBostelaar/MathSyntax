@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MathSyntax
 {
-    abstract class ArgumentValue : SyntaxBlock
+    public abstract class ArgumentValue : SyntaxBlock
     {
         public ArgumentValue(bool Constant, string Name)
         {
@@ -24,6 +24,8 @@ namespace MathSyntax
         public abstract string print();
         public abstract List<ArgumentValue> GetAllVariables();
         public abstract bool IsConstant(Dictionary<long, bool> TemporaryConstant);
+        public abstract SyntaxBlock Derivative(Dictionary<long, bool> TemporaryConstant);
+        public abstract object Clone();
 
         private static long Counter = 0;
     }

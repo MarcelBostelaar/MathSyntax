@@ -25,7 +25,7 @@ namespace MathSyntax
 
         public override List<ArgumentValue> GetAllVariables()
         {
-            var i = new List<ArgumentValue>();
+            var i = Power.GetAllVariables();
             i.Add(this);
             return i;
         }
@@ -44,6 +44,11 @@ namespace MathSyntax
                 catch { }
             }
             return false;
+        }
+
+        public override SyntaxBlock Derivative(Dictionary<long, bool> TemporaryConstant)
+        {
+            throw new NotImplementedException();
         }
     }
 }

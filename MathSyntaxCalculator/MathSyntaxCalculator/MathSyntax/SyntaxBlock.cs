@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace MathSyntax
 {
-    interface SyntaxBlock
+    public interface SyntaxBlock : ICloneable
     {
         bool IsConstant(Dictionary<long, bool> TemporaryConstant);
         string print();
         List<ArgumentValue> GetAllVariables();
+        SyntaxBlock Derivative(Dictionary<long, bool> TemporaryConstant);
     }
 }

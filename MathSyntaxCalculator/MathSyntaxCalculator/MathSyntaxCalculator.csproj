@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MathSyntax\ArgumentValue.cs" />
+    <Compile Include="MathSyntax\Derivatives.cs" />
     <Compile Include="MathSyntax\NumericConstant.cs" />
     <Compile Include="MathSyntax\Product.cs" />
     <Compile Include="MathSyntax\Variable.cs" />

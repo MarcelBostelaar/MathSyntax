@@ -26,5 +26,10 @@ namespace MathSyntax
             i.Add(this);
             return i;
         }
+
+        public override SyntaxBlock Derivative(Dictionary<long, bool> TemporaryConstant)
+        {
+            return new NumericConstant(0);
+        }
     }
 }
