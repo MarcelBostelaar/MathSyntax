@@ -55,61 +55,26 @@ namespace MathSyntax
             B = B.Simplify();
 
 
-            NumericConstant _a, _b;
-            _a = null;
-            _b = null;
-            try
-            {
-                _a = (NumericConstant)A;
-            }
-            catch { }
-            try
-            {
-                _b = (NumericConstant)B;
-            }
-            catch { }
+            var a = A as NumericConstant;
+            var b = B as NumericConstant;
 
 
-            if (_a == null && _b == null) //Neither A nor B are numeric constants, return this product in its existing state.
-            {
+            if (a == null && b == null) //Neither A nor B are numeric constants, return this product in its existing state.
                 return this;
-            }
 
-            if (_a != null && _b != null) //Both A and B are numeric constants, return new numeric constant that is the product of both.
-            {
-                return new NumericConstant(_a.value * _b.value);
-            }
+            if (a != null && b != null) //Both A and B are numeric constants, return new numeric constant that is the product of both.
+                return new NumericConstant(a.value * b.value);
 
-            if (_a != null) //if a is zero, return zero;
-            {
-                if (_a.value == 0)
-                {
-                    return new NumericConstant(0);
-                }
-            }
-            if (_b != null) //if b is zero, return zero;
-            {
-                if (_b.value == 0)
-                {
-                    return new NumericConstant(0);
-                }
-            }
+            if (a?.value == 0)  //if a is zero, return zero;
+                return new NumericConstant(0);
+            if (b?.value == 0)  //if b is zero, return zero;
+                return new NumericConstant(0);
 
 
-            if (_a != null) //if a is one, return B;
-            {
-                if (_a.value == 1)
-                {
-                    return B;
-                }
-            }
-            if (_b != null) //if b is one, return A;
-            {
-                if (_b.value == 1)
-                {
-                    return A;
-                }
-            }
+            if (a?.value == 1)  //if a is one, return B;
+                return B;
+            if (b?.value == 1)  //if b is one, return A;
+                return A;
 
             return this; //No simplification possible, return this sum in its existing state.
         }
