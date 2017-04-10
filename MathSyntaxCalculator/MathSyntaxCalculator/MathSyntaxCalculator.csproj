@@ -49,6 +49,7 @@
     <Compile Include="MathSyntax\Derivatives.cs" />
     <Compile Include="MathSyntax\NumericConstant.cs" />
     <Compile Include="MathSyntax\Product.cs" />
+    <Compile Include="MathSyntax\Quotient.cs" />
     <Compile Include="MathSyntax\Variable.cs" />
     <Compile Include="MathSyntax\VariableConstant.cs" />
     <Compile Include="Program.cs" />
