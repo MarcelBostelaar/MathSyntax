@@ -26,4 +26,4 @@ Simplification does not yet do anything beyond removing the following:
 - A / 1 -> A
 - 0 / A -> 0
 
-Calculating (partial) derivatives from large formulas can take a long time.
+~~Calculating (partial) derivatives from large formulas can take a long time.~~ Lightning fast due to a commit from Daniel.
