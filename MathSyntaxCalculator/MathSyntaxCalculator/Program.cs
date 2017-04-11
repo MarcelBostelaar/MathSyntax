@@ -15,6 +15,7 @@ namespace MathSyntaxCalculator
             Currently implemented:
                 Sums
                 Products
+                Quotients
                 Numeric constants
                 Variable constants (constants that can be changed)
                 Variables
@@ -29,9 +30,11 @@ namespace MathSyntaxCalculator
                     A * 0 -> 0
                     A * 1 -> A
                     A + 0 -> A
+                    A / 1 -> A
+                    0 / A -> 0
+                    Number / Number -> Number
                     Number + Number -> Number
                     Number * Number -> Number
-                Calculating (partial) derivatives from large formulas can take a long time.
                 
             */
 
@@ -50,9 +53,8 @@ namespace MathSyntaxCalculator
             SyntaxBlock SomeSum = new Sum(new Variable(A), new Sum(new VariableConstant(B),new NumericConstant(420))); //create a formula.
             Console.WriteLine(SomeSum.print()); //print the forumula
             Console.WriteLine(SomeSum.Calculate()); //Calculate the results of a formula
-
-            Console.Write("\n");//space on console
-            Console.WriteLine("Calculating partial derivatives");
+            
+            Console.WriteLine("\nCalculating partial derivatives");
 
 
             SyntaxBlock functionA, functionB;
