@@ -47,5 +47,35 @@ namespace MathSyntax
         {
             return value;
         }
+
+        public bool ParallelIsConstant(VariableArgumentValue Non_Constant, int Depth)
+        {
+            return IsConstant(Non_Constant);
+        }
+
+        public string ParallelPrint(int Depth)
+        {
+            return print();
+        }
+
+        public List<ArgumentValue> ParallelGetAllVariables(bool OnlyNonConstants, int Depth)
+        {
+            return GetAllVariables(OnlyNonConstants);
+        }
+
+        public SyntaxBlock ParallelDerivative(VariableArgumentValue ArgumentToDerive, int Depth)
+        {
+            return Derivative(ArgumentToDerive);
+        }
+
+        public SyntaxBlock ParallelSimplify(int Depth)
+        {
+            return Simplify();
+        }
+
+        public double ParallelCalculate(int Depth)
+        {
+            return Calculate();
+        }
     }
 }

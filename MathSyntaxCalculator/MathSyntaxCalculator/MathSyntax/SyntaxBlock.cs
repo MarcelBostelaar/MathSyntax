@@ -44,5 +44,13 @@ namespace MathSyntax
         /// </summary>
         /// <returns>The solution</returns>
         double Calculate();
+        
+
+        bool ParallelIsConstant(VariableArgumentValue Non_Constant, int Depth);
+        string ParallelPrint(int Depth);
+        List<ArgumentValue> ParallelGetAllVariables(bool OnlyNonConstants, int Depth);
+        SyntaxBlock ParallelDerivative(VariableArgumentValue ArgumentToDerive, int Depth);
+        SyntaxBlock ParallelSimplify(int Depth);
+        double ParallelCalculate(int Depth);
     }
 }

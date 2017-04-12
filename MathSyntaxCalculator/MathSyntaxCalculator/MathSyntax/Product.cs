@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,7 +28,13 @@ namespace MathSyntax
 
         public SyntaxBlock Derivative(VariableArgumentValue ArgumentToDerive)
         {
-            return new Sum(new Product(A.Derivative(ArgumentToDerive), B), new Product(A, B.Derivative(ArgumentToDerive)));
+            return DerivativeFormulate(A.Derivative(ArgumentToDerive), B.Derivative(ArgumentToDerive));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public SyntaxBlock DerivativeFormulate(SyntaxBlock Adir, SyntaxBlock Bdir)
+        {
+            return new Sum(new Product(Adir, B), new Product(A, Bdir));
         }
 
         public List<ArgumentValue> GetAllVariables(bool OnlyNonConstants)
@@ -44,17 +51,114 @@ namespace MathSyntax
             return false;
         }
 
+        public double ParallelCalculate(int Depth)
+        {
+            if(Depth == 0)
+            {
+                return Calculate();
+            }
+            double a = 0;
+            double b = 0;
+            Parallel.Invoke(
+                () => { a = A.ParallelCalculate(Depth - 1); },
+                () => { b = B.ParallelCalculate(Depth - 1); }
+                );
+            return a * b;
+        }
+
+        public SyntaxBlock ParallelDerivative(VariableArgumentValue ArgumentToDerive, int Depth)
+        {
+            if(Depth == 0)
+            {
+                return Derivative(ArgumentToDerive);
+            }
+            SyntaxBlock adir = null;
+            SyntaxBlock bdir = null;
+            Parallel.Invoke(
+                () => { adir = A.ParallelDerivative(ArgumentToDerive, Depth - 1); },
+                () => { bdir = B.ParallelDerivative(ArgumentToDerive, Depth - 1); }
+                );
+            return DerivativeFormulate(adir, bdir);
+        }
+
+        public List<ArgumentValue> ParallelGetAllVariables(bool OnlyNonConstants, int Depth)
+        {
+            if(Depth == 0)
+            {
+                return GetAllVariables(OnlyNonConstants);
+            }
+            List<ArgumentValue> a = null;
+            List<ArgumentValue> b = null;
+            Parallel.Invoke(
+                () => { a = A.ParallelGetAllVariables(OnlyNonConstants, Depth - 1); },
+                () => { b = B.ParallelGetAllVariables(OnlyNonConstants, Depth - 1); }
+                );
+            a.AddRange(b);
+            return a;
+        }
+
+        public bool ParallelIsConstant(VariableArgumentValue Non_Constant, int Depth)
+        {
+            if(Depth == 0)
+            {
+                return IsConstant(Non_Constant);
+            }
+            bool a = false;
+            bool b = false;
+            Parallel.Invoke(
+                () => { a = A.ParallelIsConstant(Non_Constant, Depth-1); },
+                () => { b = B.ParallelIsConstant(Non_Constant, Depth-1); }
+                );
+            return a && b;
+        }
+
+        public string ParallelPrint(int Depth)
+        {
+            if(Depth == 0)
+            {
+                return print();
+            }
+            string a = "";
+            string b = "";
+            Parallel.Invoke(
+                () => { a = A.ParallelPrint(Depth - 1); },
+                () => { b = B.ParallelPrint(Depth - 1); }
+                );
+            return printFormat(a, b);
+        }
+
+        public SyntaxBlock ParallelSimplify(int Depth)
+        {
+            if(Depth == 0)
+            {
+                return Simplify();
+            }
+            Parallel.Invoke(
+                () => { A = A.ParallelSimplify(Depth - 1); },
+                () => { B = B.ParallelSimplify(Depth - 1); }
+                );
+            return SimplifySelf();
+        }
+
         public string print()
         {
-            return ("(" + A.print() + " * " + B.print() + " )");
+            return printFormat(A.print(), B.print());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private string printFormat(string a, string b)
+        {
+            return ("(" + a + " * " + b + " )");
         }
 
         public SyntaxBlock Simplify()
         {
             A = A.Simplify();
             B = B.Simplify();
-
-
+            return SimplifySelf();
+        }
+        private SyntaxBlock SimplifySelf()
+        {
             var a = A as NumericConstant;
             var b = B as NumericConstant;
 
@@ -63,7 +167,7 @@ namespace MathSyntax
                 return this;
 
             if (a != null && b != null) //Both A and B are numeric constants, return new numeric constant that is the product of both.
-                return new NumericConstant(a.value * b.value);
+                return new NumericConstant(a.value* b.value);
 
             if (a?.value == 0)  //if a is zero, return zero;
                 return new NumericConstant(0);
