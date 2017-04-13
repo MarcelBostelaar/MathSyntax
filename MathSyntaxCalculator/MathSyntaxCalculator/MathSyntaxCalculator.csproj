@@ -43,8 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MathSyntax\Abstract variable.cs" />
+    <Compile Include="MathSyntax\AbstractClasses\Abstract variable.cs" />
     <Compile Include="MathSyntax\AbstractClasses\AbstractOrderirrelevantOperator.cs" />
+    <Compile Include="MathSyntax\AbstractClasses\AbstractOperator.cs" />
+    <Compile Include="MathSyntax\AbstractClasses\AbstractOrderstrictOperator.cs" />
     <Compile Include="MathSyntax\ArgumentValue.cs" />
     <Compile Include="MathSyntax\DerivativeException.cs" />
     <Compile Include="MathSyntax\Derivatives.cs" />

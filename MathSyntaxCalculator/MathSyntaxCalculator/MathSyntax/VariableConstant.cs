@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MathSyntax
 {
-    class VariableConstant : Abstract_variable
+    class VariableConstant : AbstractClasses.Abstract_variable
     {
         /// <summary>
         /// Creates a variable constant. Acts as a constant that can have its value changed.

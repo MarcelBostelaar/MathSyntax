@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathSyntax
+namespace MathSyntax.AbstractClasses
 {
     abstract class Abstract_variable : SyntaxBlock
     {

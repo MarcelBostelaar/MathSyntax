@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MathSyntax
 {
-    class Variable : Abstract_variable
+    class Variable : AbstractClasses.Abstract_variable
     {
         /// <summary>
         /// Creates a variable.
