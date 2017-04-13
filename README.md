@@ -14,6 +14,9 @@ A C# library for dynamically creating mathematical formulas and performing opera
 - (Partial) derivatives
 - Calculations
 - Printing of formulas
+- Simplification
+- Comparison of formulas
+- Parallelised versions for all functionality (Using the default Parallel class)
 
 ## Notes:
 Simplification does not yet do anything beyond removing the following:
