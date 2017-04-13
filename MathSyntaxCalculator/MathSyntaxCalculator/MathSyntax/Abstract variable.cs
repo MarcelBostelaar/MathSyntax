@@ -66,5 +66,18 @@ namespace MathSyntax
         {
             return Derivative(ArgumentToDerive);
         }
+
+        public bool Equals(SyntaxBlock ToCompare)
+        {
+            Abstract_variable casted = ToCompare as Abstract_variable;
+            if (casted?.Argument == Argument)
+                return true;
+            return false;
+        }
+
+        public bool ParallelEquals(SyntaxBlock ToCompare, int Depth)
+        {
+            return Equals(ToCompare);
+        }
     }
 }

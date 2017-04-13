@@ -77,5 +77,18 @@ namespace MathSyntax
         {
             return Calculate();
         }
+
+        public bool Equals(SyntaxBlock ToCompare)
+        {
+            var casted = ToCompare as NumericConstant;
+            if (casted?.value == value)
+                return true;
+            return false;
+        }
+
+        public bool ParallelEquals(SyntaxBlock ToCompare, int Depth)
+        {
+            return Equals(ToCompare);
+        }
     }
 }

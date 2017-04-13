@@ -41,6 +41,7 @@ namespace MathSyntaxCalculator
                     i.IsConstant(A);
                     i.print();
                     i.Simplify();
+                    i.Equals(i);
 
                     i.ParallelCalculate(1);
                     i.ParallelDerivative(A, 1);
@@ -48,9 +49,10 @@ namespace MathSyntaxCalculator
                     i.ParallelIsConstant(A, 1);
                     i.ParallelPrint(1);
                     i.ParallelSimplify(1);
+                    i.ParallelEquals(i, 1);
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 return false;
             }

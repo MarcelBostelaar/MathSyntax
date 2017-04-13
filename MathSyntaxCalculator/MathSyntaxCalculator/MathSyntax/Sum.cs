@@ -183,5 +183,59 @@ namespace MathSyntax
                 );
             return a + b;
         }
+
+        public bool Equals(SyntaxBlock ToCompare)
+        {
+            Sum casted = ToCompare as Sum;
+            if(casted == null)
+            {
+                return false;
+            }
+
+            if (A.Equals(casted.A)) {
+                if (B.Equals(casted.B))
+                    return true;
+            }
+            if (B.Equals(casted.A))
+            {
+                if (A.Equals(casted.B))
+                    return true;
+            }
+            return false;
+        }
+
+        public bool ParallelEquals(SyntaxBlock ToCompare, int Depth)
+        {
+            if (Depth == 0)
+            {
+                return Equals(ToCompare);
+            }
+
+            var casted = ToCompare as Sum;
+            if (casted == null)
+                return false;
+
+            bool aisa, aisb;
+            aisa = false;
+            aisb = false;
+
+            Parallel.Invoke(
+                () => {
+                    if (A.Equals(casted.A))
+                    {
+                        if (B.Equals(casted.B))
+                            aisa = true;
+                    }
+                },
+                ()=>{
+                    if (B.Equals(casted.A))
+                    {
+                        if (A.Equals(casted.B))
+                            aisb = true;
+                    }
+                }
+                );
+            return aisa || aisb;
+        }
     }
 }

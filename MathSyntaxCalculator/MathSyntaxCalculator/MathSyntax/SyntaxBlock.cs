@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,8 +45,14 @@ namespace MathSyntax
         /// </summary>
         /// <returns>The solution</returns>
         double Calculate();
-        
+        /// <summary>
+        /// Compares two SyntaxBlocks for equivalenty.
+        /// </summary>
+        /// <param name="ToCompare">The SyntaxBlock with which to compare this one.</param>
+        /// <returns>Boolean indicating equality.</returns>
+        bool Equals(SyntaxBlock ToCompare);
 
+        bool ParallelEquals(SyntaxBlock ToCompare, int Depth);
         bool ParallelIsConstant(VariableArgumentValue Non_Constant, int Depth);
         string ParallelPrint(int Depth);
         List<ArgumentValue> ParallelGetAllVariables(bool OnlyNonConstants, int Depth);

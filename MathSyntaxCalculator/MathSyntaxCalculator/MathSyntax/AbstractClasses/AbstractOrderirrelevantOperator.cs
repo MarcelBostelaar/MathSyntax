@@ -5,26 +5,21 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathSyntax
+namespace MathSyntax.AbstractClasses
 {
-    class Product : SyntaxBlock
+    /// <summary>
+    /// Shared methods for Sum and Product (add a super class that abstracts shared methods for all operators)
+    /// </summary>
+    abstract class AbstractOrderirrelevantOperator : SyntaxBlock
     {
         SyntaxBlock A, B;
-        /// <summary>
-        /// Creates a product syntax block, which multiplies argument A and B together.
-        /// </summary>
-        /// <param name="A">The left side of the product.</param>
-        /// <param name="B">The right side of the product.</param>
-        public Product(SyntaxBlock A, SyntaxBlock B)
+        public AbstractOrderirrelevantOperator(SyntaxBlock A, SyntaxBlock B)
         {
             this.A = A;
             this.B = B;
         }
 
-        public double Calculate()
-        {
-            return A.Calculate() * B.Calculate();
-        }
+        public abstract double Calculate();
 
         public SyntaxBlock Derivative(VariableArgumentValue ArgumentToDerive)
         {
@@ -32,10 +27,7 @@ namespace MathSyntax
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SyntaxBlock DerivativeFormulate(SyntaxBlock Adir, SyntaxBlock Bdir)
-        {
-            return new Sum(new Product(Adir, B), new Product(A, Bdir));
-        }
+        public abstract SyntaxBlock DerivativeFormulate(SyntaxBlock Adir, SyntaxBlock Bdir);
 
         public List<ArgumentValue> GetAllVariables(bool OnlyNonConstants)
         {
@@ -53,7 +45,7 @@ namespace MathSyntax
 
         public double ParallelCalculate(int Depth)
         {
-            if(Depth == 0)
+            if (Depth == 0)
             {
                 return Calculate();
             }
@@ -63,12 +55,16 @@ namespace MathSyntax
                 () => { a = A.ParallelCalculate(Depth - 1); },
                 () => { b = B.ParallelCalculate(Depth - 1); }
                 );
-            return a * b;
+            return CalculateResult(a, b);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected abstract double CalculateResult(double a, double b);
+
 
         public SyntaxBlock ParallelDerivative(VariableArgumentValue ArgumentToDerive, int Depth)
         {
-            if(Depth == 0)
+            if (Depth == 0)
             {
                 return Derivative(ArgumentToDerive);
             }
@@ -83,7 +79,7 @@ namespace MathSyntax
 
         public List<ArgumentValue> ParallelGetAllVariables(bool OnlyNonConstants, int Depth)
         {
-            if(Depth == 0)
+            if (Depth == 0)
             {
                 return GetAllVariables(OnlyNonConstants);
             }
@@ -99,22 +95,22 @@ namespace MathSyntax
 
         public bool ParallelIsConstant(VariableArgumentValue Non_Constant, int Depth)
         {
-            if(Depth == 0)
+            if (Depth == 0)
             {
                 return IsConstant(Non_Constant);
             }
             bool a = false;
             bool b = false;
             Parallel.Invoke(
-                () => { a = A.ParallelIsConstant(Non_Constant, Depth-1); },
-                () => { b = B.ParallelIsConstant(Non_Constant, Depth-1); }
+                () => { a = A.ParallelIsConstant(Non_Constant, Depth - 1); },
+                () => { b = B.ParallelIsConstant(Non_Constant, Depth - 1); }
                 );
             return a && b;
         }
 
         public string ParallelPrint(int Depth)
         {
-            if(Depth == 0)
+            if (Depth == 0)
             {
                 return print();
             }
@@ -129,7 +125,7 @@ namespace MathSyntax
 
         public SyntaxBlock ParallelSimplify(int Depth)
         {
-            if(Depth == 0)
+            if (Depth == 0)
             {
                 return Simplify();
             }
@@ -146,10 +142,7 @@ namespace MathSyntax
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private string printFormat(string a, string b)
-        {
-            return ("(" + a + " * " + b + " )");
-        }
+        abstract protected string printFormat(string a, string b);
 
         public SyntaxBlock Simplify()
         {
@@ -157,40 +150,66 @@ namespace MathSyntax
             B = B.Simplify();
             return SimplifySelf();
         }
-        private SyntaxBlock SimplifySelf()
-        {
-            var a = A as NumericConstant;
-            var b = B as NumericConstant;
-
-
-            if (a == null && b == null) //Neither A nor B are numeric constants, return this product in its existing state.
-                return this;
-
-            if (a != null && b != null) //Both A and B are numeric constants, return new numeric constant that is the product of both.
-                return new NumericConstant(a.value* b.value);
-
-            if (a?.value == 0)  //if a is zero, return zero;
-                return new NumericConstant(0);
-            if (b?.value == 0)  //if b is zero, return zero;
-                return new NumericConstant(0);
-
-
-            if (a?.value == 1)  //if a is one, return B;
-                return B;
-            if (b?.value == 1)  //if b is one, return A;
-                return A;
-
-            return this; //No simplification possible, return this sum in its existing state.
-        }
+        protected abstract SyntaxBlock SimplifySelf();
 
         public bool Equals(SyntaxBlock ToCompare)
         {
-            throw new NotImplementedException();
+            var casted = ToCompare as AbstractOrderirrelevantOperator;
+            if (casted == null)
+            {
+                return false;
+            }
+            if (ToCompare.GetType() != GetType())
+                return false;
+
+            if (A.Equals(casted.A))
+            {
+                if (B.Equals(casted.B))
+                    return true;
+            }
+            if (B.Equals(casted.A))
+            {
+                if (A.Equals(casted.B))
+                    return true;
+            }
+            return false;
+
         }
 
         public bool ParallelEquals(SyntaxBlock ToCompare, int Depth)
         {
-            throw new NotImplementedException();
+            if (Depth == 0)
+            {
+                return Equals(ToCompare);
+            }
+
+            var casted = ToCompare as AbstractOrderirrelevantOperator;
+            if (casted == null)
+                return false;
+            if (ToCompare.GetType() != GetType())
+                return false;
+
+            bool aisa, aisb;
+            aisa = false;
+            aisb = false;
+
+            Parallel.Invoke(
+                () => {
+                    if (A.Equals(casted.A))
+                    {
+                        if (B.Equals(casted.B))
+                            aisa = true;
+                    }
+                },
+                () => {
+                    if (B.Equals(casted.A))
+                    {
+                        if (A.Equals(casted.B))
+                            aisb = true;
+                    }
+                }
+                );
+            return aisa || aisb;
         }
     }
 }
